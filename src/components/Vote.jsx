@@ -8,9 +8,10 @@ export async function Vote({ postId, votes }) {
     "use server";
     const session = await auth();
     if (!session) {
-      throw new Error(
-        "Looks like you messed up somewhere. Funny error mesasge that is meant to disarm you, and not make you leave my webstie! LOL"
-      );
+      revalidatePath(`/post/${postId}`);
+      // throw new Error(
+      //   "Looks like you messed up somewhere. Funny error mesasge that is meant to disarm you, and not make you leave my webstie! LOL"
+      // );
     }
     console.log("Upvote", postId, "by user", session.user.id);
     await db.query(
