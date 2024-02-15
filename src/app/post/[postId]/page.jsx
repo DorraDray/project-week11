@@ -2,7 +2,20 @@ import { CommentForm } from "@/components/CommentForm";
 import { CommentList } from "@/components/CommentList";
 import { Vote } from "@/components/Vote";
 import { db } from "@/db";
-
+export async function generateMetadata({ params }) {
+  const postId = params.postId;
+  // load the post
+  const { rows: posts } = await db.query(
+    `SELECT * FROM posts
+      WHERE posts.id = ${postId}`
+  );
+  const post = posts[0]; // get the first one
+  console.log("post:", { post });
+  return {
+    title: post.title,
+    description: post.body,
+  };
+}
 export default async function SinglePostPage({ params }) {
   const postId = params.postId;
 
